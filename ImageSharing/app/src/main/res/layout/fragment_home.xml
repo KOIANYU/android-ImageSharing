@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.HomeFragment">
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/my_avatar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_myself_avatar"/>
+
+        <TextView
+            android:id="@+id/my_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KOIAN"
+            android:textSize="20sp"
+            android:layout_toRightOf="@id/my_avatar"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="6dp"/>
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/my_avatar"
+            android:background="@drawable/bg_search"
+            app:defaultQueryHint="搜索"/>
+
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/share_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/rl_content"
+        android:divider="@null"
+        android:numColumns="2" />
+
+
+</RelativeLayout>

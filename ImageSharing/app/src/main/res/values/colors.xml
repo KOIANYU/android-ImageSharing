@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="deep_white">#FAFAFA</color>
+    <color name="dark_green">#266D47</color>
+    <color name="grey25">#EDEDED</color>
+    <color name="dark_grey25">#BEBEBE</color>
+    <color name="blue">#31ACD6</color>
+    <color name="light_blue">#89CFF0</color>
+    <color name="listBackGround">#EDEDED</color>
+    <color name="imageCardBack">#E3E3E3</color>
+</resources>

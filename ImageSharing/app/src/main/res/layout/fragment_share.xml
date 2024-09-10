@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ShareFragment">
+
+    <ScrollView
+        android:id="@+id/sv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/light_blue" />
+
+            <RelativeLayout
+                android:id="@+id/rl_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginTop="5dp">
+
+                <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="标题"
+                    android:textSize="20sp"
+                    android:padding="15dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"/>
+
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@null"
+                    android:hint="说点什么..."
+                    android:textColorHint="#888888"
+                    android:gravity="top"
+                    android:padding="15dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_below="@id/et_title"/>
+
+                <LinearLayout
+                    android:id="@+id/rl_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_below="@id/et_content">
+
+                    <GridView
+                        android:id="@+id/gv_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:numColumns="4"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_add"
+                    android:layout_width="92dp"
+                    android:layout_height="92dp"
+                    android:background="@color/listBackGround"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_below="@id/rl_image"
+                    android:src="@drawable/ic_add"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/light_blue"
+                android:layout_below="@id/rl_content"/>
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text=" 保存 "
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/button_rounded"
+                android:layout_below="@id/rl_content" />
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text=" 发布 "
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/button_rounded"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/rl_content" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</FrameLayout>

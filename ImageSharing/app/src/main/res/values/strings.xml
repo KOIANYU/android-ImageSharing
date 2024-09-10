@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ImageSharing</string>
+
+    <string name="shared_preferences_file_name">sp_login</string>
+
+    <string name="login_username">login_username</string>
+
+    <string name="login_password">login_password</string>
+
+    <string name="login_remember">login_remember</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
