@@ -1,0 +1,8 @@
+Header:
+  appId: 0c43d325bd4c4077a2ef71afd51a2ac9
+  appSecret: 1796311d4cb76a76e4c309e0ca1c6ff5a13c0
+
+server:
+  port: 8080
+
+
