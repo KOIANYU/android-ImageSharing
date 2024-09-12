@@ -2,7 +2,6 @@ package com.imagesharing.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +13,15 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.imagesharing.R;
 import com.imagesharing.fragment.HomeFragment;
-import com.imagesharing.fragment.MyFragment;
+import com.imagesharing.fragment.MeFragment;
 import com.imagesharing.fragment.ShareFragment;
 
 public class NavigationActivity extends AppCompatActivity {
 
     private HomeFragment homeFragment;
     private ShareFragment shareFragment;
-    private MyFragment myFragment;
+    private MeFragment meFragment;
+    private BottomNavigationView bottomNavigationView;
 
     private Long userId;
     private String username;
@@ -41,12 +41,18 @@ public class NavigationActivity extends AppCompatActivity {
         userId = intent.getLongExtra("userId", -1);
         username = intent.getStringExtra("username");
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // 监听底部导航栏的点击事件
+        bottomClick();
 
         // 默认选中第一个页面
         selectedFragment(0);
 
-        // 监听底部导航栏的点击事件
+    }
+
+    // 监听底部导航栏的点击事件
+    private void bottomClick() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) {
                 selectedFragment(0);
@@ -57,9 +63,12 @@ public class NavigationActivity extends AppCompatActivity {
             }
             return true;
         });
-
     }
 
+    /**
+     * 根据position显示相应的Fragment
+     * @param position 0表示首页，1表示分享，2表示我的
+     */
     private void selectedFragment(int position) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         hideFragment(fragmentTransaction);
@@ -67,7 +76,7 @@ public class NavigationActivity extends AppCompatActivity {
         switch (position) {
             case 0:
                 if (homeFragment == null) {
-                    homeFragment = new HomeFragment(userId, username);
+                    homeFragment = new HomeFragment(userId);
                     fragmentTransaction.add(R.id.fragment_container, homeFragment);
                 } else {
                     fragmentTransaction.show(homeFragment);
@@ -82,11 +91,11 @@ public class NavigationActivity extends AppCompatActivity {
                 }
                 break;
             case 2:
-                if (myFragment == null) {
-                    myFragment = new MyFragment();
-                    fragmentTransaction.add(R.id.fragment_container, myFragment);
+                if (meFragment == null) {
+                    meFragment = new MeFragment(userId, username);
+                    fragmentTransaction.add(R.id.fragment_container, meFragment);
                 } else {
-                    fragmentTransaction.show(myFragment);
+                    fragmentTransaction.show(meFragment);
                 }
                 break;
             default:
@@ -99,7 +108,7 @@ public class NavigationActivity extends AppCompatActivity {
     private void hideFragment(FragmentTransaction fragmentTransaction) {
         if (homeFragment != null) fragmentTransaction.hide(homeFragment);
         if (shareFragment != null) fragmentTransaction.hide(shareFragment);
-        if (myFragment != null) fragmentTransaction.hide(myFragment);
+        if (meFragment != null) fragmentTransaction.hide(meFragment);
     }
 
 }

@@ -8,10 +8,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +21,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.imagesharing.R;
 import com.imagesharing.adapter.ImageAdapter;
@@ -36,14 +32,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -60,21 +54,17 @@ import okhttp3.Response;
 public class ShareFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private GridView glImages;
-    private ImageView ivImage;
     private ImageAdapter adapter;
 
     private EditText etTitle;
     private EditText etContent;
 
-    private Button btnSave;
-    private Button btnSend;
-
     private List<Uri> imageUris;
     private List<File> imageFiles;
 
     private Long imageCode;
-    private Long userId;
+    private final Long userId;
+    private int shareListCode;
 
     private Context context;
 
@@ -93,8 +83,8 @@ public class ShareFragment extends Fragment {
         etTitle = view.findViewById(R.id.et_title);
         etContent = view.findViewById(R.id.et_content);
 
-        glImages = view.findViewById(R.id.gv_image);
-        ivImage = view.findViewById(R.id.iv_add);
+        GridView glImages = view.findViewById(R.id.gv_image);
+        ImageView ivImage = view.findViewById(R.id.iv_add);
 
         imageUris = new ArrayList<>();
         imageFiles = new ArrayList<>();
@@ -106,16 +96,23 @@ public class ShareFragment extends Fragment {
         glImages.setAdapter(adapter);
 
         // 保存按钮点击事件
-        btnSave = view.findViewById(R.id.btn_save);
+        Button btnSave = view.findViewById(R.id.btn_save);
         btnSave.setOnClickListener(v -> saveShare());
 
         // 发布按钮点击事件
-        btnSend = view.findViewById(R.id.btn_send);
-        btnSend.setOnClickListener(v -> getMyShareList());
+        Button btnSend = view.findViewById(R.id.btn_send);
+        btnSend.setOnClickListener(v -> {
+            if (shareListCode == 200) {
+                getMyShareList();
+            } else {
+                Toast.makeText(getContext(), "请先保存分享内容", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
 
+    // 从相册选择图片
     private void selectImagesFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -140,14 +137,15 @@ public class ShareFragment extends Fragment {
                     try {
                         InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
 
-                        File file = createFile(inputStream);
+                        File file = createFile(Objects.requireNonNull(inputStream));
 
                         imageFiles.add(file);
+
                         Log.d("imageFiles", imageFiles.toString());
 
                         inputStream.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e("ShareFragment", "Error reading image: " + e.getMessage());
                     }
 
                 }
@@ -159,14 +157,14 @@ public class ShareFragment extends Fragment {
                 try {
                     InputStream inputStream = getActivity().getContentResolver().openInputStream(singleImageUri);
 
-                    File file = createFile(inputStream);
+                    File file = createFile(Objects.requireNonNull(inputStream));
 
                     imageFiles.add(file);
                     Log.d("imageFiles", imageFiles.toString());
 
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("ShareFragment", "Error reading image: " + e.getMessage());
                 }
             }
 
@@ -218,57 +216,55 @@ public class ShareFragment extends Fragment {
                         .build();
 
                 // 发送请求
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        // 处理失败情况
-                        Log.e("Upload", "Failed to upload images", e);
-                        // 确保在主线程中显示 Toast
-                        getActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "上传失败", Toast.LENGTH_SHORT).show();
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        // 处理成功响应
-                        if (!response.isSuccessful())
-                            throw new IOException("Unexpected code " + response);
-
-                        // 处理服务器返回的数据
-                        String responseBody = response.body().string();
-                        Log.d("Upload", "Server responded with: " + responseBody);
-
-                        // 解析服务器返回的JSON数据
-                        JSONObject jsonResponse = null;
-                        try {
-                            jsonResponse = new JSONObject(responseBody);
-
-                            JSONObject data = jsonResponse.getJSONObject("data");
-                            int code = jsonResponse.getInt("code");
-
-                            if (code == 200) {
-                                // 确保在主线程中显示 Toast
-                                getActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), "图片添加成功", Toast.LENGTH_SHORT).show();
-                                });
-
-                                imageCode = data.getLong("imageCode");
-                            }
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
+                client.newCall(request).enqueue(callback);
             }).start();
         }
     }
 
+    private final Callback callback = new Callback() {
+        @Override
+        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+            // 处理失败情况
+            Log.e("Upload", "Failed to upload images", e);
+            // 确保在主线程中显示 Toast
+            getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "上传失败", Toast.LENGTH_SHORT).show());
+        }
 
+        @Override
+        public void onResponse(@NonNull Call call, Response response) throws IOException {
+            // 处理服务器返回的数据
+            String responseBody = Objects.requireNonNull(response.body()).string();
+
+            Log.d("Upload", "Server responded with: " + responseBody);
+
+            try { // 解析服务器返回的JSON数据
+                JSONObject jsonResponse = new JSONObject(responseBody);
+                JSONObject data = jsonResponse.getJSONObject("data");
+                int code = jsonResponse.getInt("code");
+
+                if (code == 200) {
+                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "图片添加成功", Toast.LENGTH_SHORT).show());
+
+                    imageCode = data.getLong("imageCode");
+
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+
+    /**
+     * 转换从相册获取的图片的格式
+     * @param inputStream 输入字节流
+     * @return 图片文件 file
+     * @throws IOException 处理异常
+     */
     private File createFile(InputStream inputStream) throws IOException {
         File file = File.createTempFile("temp_image", ".jpg", getActivity().getCacheDir());
 
-        OutputStream outputStream = new FileOutputStream(file);
+        OutputStream outputStream = Files.newOutputStream(file.toPath());
 
         byte[] buffer = new byte[1024];
 
@@ -299,24 +295,31 @@ public class ShareFragment extends Fragment {
                 params.put("title", etTitle.getText().toString());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("ShareFragment", e.toString());
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.POST, url, params, response -> {
-                parseJsonResponse(response);
-            }, error -> Log.d("LoginActivity", error.toString()));
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.POST,
+                    url,
+                    params,
+                    this::parseSaveShareResponse,
+                    error -> Log.d("LoginActivity", error.toString())
+            );
 
             queue.add(jsonObjectRequest);
 
         }).start();
     }
 
-    private void parseJsonResponse(JSONObject response) {
+    /**
+     * 解析保存分享的JSON响应
+     * @param response 相应体信息
+     */
+    private void parseSaveShareResponse(JSONObject response) {
 
         try {
             String msg = response.getString("msg");
-            int code = response.getInt("code");
-            if (code == 200) {
+            shareListCode = response.getInt("code");
+            if (shareListCode == 200) {
                 getActivity().runOnUiThread(() -> {
                     Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
                     Log.d("ShareFragment", response.toString());
@@ -339,36 +342,12 @@ public class ShareFragment extends Fragment {
 
             RequestQueue queue = Volley.newRequestQueue(context);
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, null, response -> {
-
-                try {
-                    String msg = response.getString("msg");
-                    int code = response.getInt("code");
-                    JSONObject data = response.getJSONObject("data");
-
-                    Log.d("getMyShareList", response.toString());
-
-                    JSONArray recordsArray = data.getJSONArray("records");
-
-                    for (int i = 0; i < recordsArray.length(); i++) {
-
-                        JSONObject record = recordsArray.getJSONObject(i);
-
-                        Long singleImageCode = record.getLong("imageCode");
-
-                        if (singleImageCode.equals(imageCode)) {
-
-                            Log.d("record", record.toString());
-
-                            sendShare(record);
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }, error -> Log.d("LoginActivity", error.toString()));
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET,
+                    url,
+                    null,
+                    this::parseMyShareListResponse,
+                    error -> Log.d("LoginActivity", error.toString())
+            );
 
             queue.add(jsonObjectRequest);
 
@@ -376,7 +355,45 @@ public class ShareFragment extends Fragment {
 
     }
 
-    // 处理发送分享
+    /**
+     * 解析获得保存分享列表的JSON响应
+     * @param response 响应体信息
+     */
+    private void parseMyShareListResponse(JSONObject response) {
+        try {
+            int code = response.getInt("code");
+            JSONObject data = response.getJSONObject("data");
+
+            Log.d("getMyShareList", response.toString());
+
+            JSONArray recordsArray = data.getJSONArray("records");
+
+            if (code == 200) {
+                for (int i = 0; i < recordsArray.length(); i++) {
+
+                    JSONObject record = recordsArray.getJSONObject(i);
+
+                    Long singleImageCode = record.getLong("imageCode");
+
+                    if (singleImageCode.equals(imageCode)) {
+
+                        Log.d("record", record.toString());
+
+                        sendShare(record);
+                    }
+                }
+            } else {
+                Toast.makeText(context, "还未选中任何图片", Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 处理发送分享
+     * @param record 待分享的图文信息
+     */
     private void sendShare(JSONObject record) {
         new Thread(() -> {
             String url = "http://10.70.142.223:8080/share/add";
@@ -393,13 +410,15 @@ public class ShareFragment extends Fragment {
                 params.put("title", record.getString("title"));
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("sendShare", Objects.requireNonNull(e.getMessage()));
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.POST, url, params, response -> {
-                Log.d("sendShare", response.toString());
-
-            }, error -> Log.d("LoginActivity", error.toString()));
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.POST,
+                    url,
+                    params,
+                    response -> Log.d("sendShare", response.toString()),
+                    error -> Log.d("LoginActivity", error.toString())
+            );
 
             queue.add(jsonObjectRequest);
 

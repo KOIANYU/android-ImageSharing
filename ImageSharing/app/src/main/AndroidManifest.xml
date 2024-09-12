@@ -37,6 +37,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".view.CollectionActivity" />
+        <activity android:name=".view.LikesActivity" />
+        <activity android:name=".view.FocusActivity"/>
+        <activity android:name=".view.MyDynamicsActivity"/>
+        <activity android:name=".view.SettingsActivity" />
+        <activity android:name=".view.AboutUsActivity" />
+        <activity android:name=".view.DraftsActivity" />
     </application>
 
 </manifest>

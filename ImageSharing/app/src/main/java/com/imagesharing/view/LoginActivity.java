@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,8 +25,6 @@ import com.imagesharing.R;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -36,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText etUsername;
     private TextInputEditText etPassword;
     private CheckBox cbRemember;
+    private Button btnLogin;
 
     private SharedPreferences sharedPreferences;
 
@@ -57,9 +55,25 @@ public class LoginActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
+        btnLogin = findViewById(R.id.bt_login);
+        cbRemember = findViewById(R.id.cb_remember);
+        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        Button btnLogin = findViewById(R.id.bt_login);
+        loginClick();
 
+        reload();
+
+        TextView tvRegister = findViewById(R.id.tv_register);
+
+        tvRegister.setOnClickListener(v -> { // 处理注册标签点击事件
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
+    }
+
+    // 登录按钮点击事件
+    private void loginClick() {
         btnLogin.setOnClickListener(v -> { // 处理登录按钮点击事件
             // 获取用户名和密码
             String username = Objects.requireNonNull(etUsername.getText()).toString();
@@ -78,21 +92,9 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         });
-
-        cbRemember = findViewById(R.id.cb_remember);
-
-        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        reload();
-
-        TextView tvRegister = findViewById(R.id.tv_register);
-
-        tvRegister.setOnClickListener(v -> { // 处理注册标签点击事件
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        });
-
     }
 
+    // 重新加载上次登录信息
     private void reload() {
         boolean isRemember = sharedPreferences.getBoolean(KEY_REMEMBER, false);
 
@@ -111,13 +113,12 @@ public class LoginActivity extends AppCompatActivity {
      * @param username 用户名
      */
     private void login(String password, String username) {
-
-        runOnUiThread(() -> {
+        new Thread(() -> {
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            String URL = "http://10.70.142.223:8080/user/login"; // ip换成自己的电脑ip，端口默认8080
+            String url = "http://10.70.142.223:8080/user/login?password=" + password + "&username=" + username;
 
-            StringRequest request = new StringRequest(Request.Method.POST, URL, response -> {// 处理请求成功
+            StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
                 parseJsonResponse(response);
 
                 if (cbRemember.isChecked()) { // 如果勾选了记住密码，则保存用户名和密码
@@ -130,18 +131,9 @@ public class LoginActivity extends AppCompatActivity {
 
             }, error -> { // 处理请求失败
                 Log.d("LoginActivity", "Error: " + error.getMessage());
-            }){
-                @NonNull
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("password", password);
-                    map.put("username", username);
-                    return map;
-                }
-            };
+            });
             queue.add(request);
-        });
+        }).start();
     }
 
     /**

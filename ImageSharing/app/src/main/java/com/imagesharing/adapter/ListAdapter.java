@@ -68,7 +68,6 @@ public class ListAdapter extends BaseAdapter {
     public static class ViewHolder {
         ImageView ivImage;
         TextView tvTitle;
-        TextView tvUsername;
         TextView tvLikeNumbers;
         TextView tvCollectNumbers;
 
@@ -80,7 +79,6 @@ public class ListAdapter extends BaseAdapter {
         ViewHolder(View view, Context context) {
             ivImage = view.findViewById(R.id.iv_image);
             tvTitle = view.findViewById(R.id.tv_title);
-            tvUsername = view.findViewById(R.id.tv_username);
             tvLikeNumbers = view.findViewById(R.id.tv_likeNumbers);
             tvCollectNumbers = view.findViewById(R.id.tv_collectNumbers);
 
@@ -93,12 +91,16 @@ public class ListAdapter extends BaseAdapter {
         void bind(List<JSONObject> records, int position, Long userId, Context context) {
             JSONObject record = records.get(position);
             try {
-                JSONArray imageUrlList = record.getJSONArray("imageUrlList");
                 tvTitle.setText(record.getString("title"));
-                tvUsername.setText(record.getString("username"));
                 tvLikeNumbers.setText(record.getString("likeNum"));
                 tvCollectNumbers.setText(record.getString("collectNum"));
-                loadImages(imageUrlList);
+
+                if (record.isNull("imageUrl")) {
+                    JSONArray imageUrlList = record.getJSONArray("imageUrlList");
+                    loadImages(imageUrlList);
+                } else {
+                    ivImage.setImageResource(R.drawable.default_image2);
+                }
 
                 like(ivLike, record.getLong("id"), userId, context);
                 collect(ivCollect, record.getLong("id"), userId, context);
@@ -124,13 +126,14 @@ public class ListAdapter extends BaseAdapter {
     public static void like(ImageView ivLike, Long shareId, Long userId, Context context) {
         Drawable currentDrawable = ivLike.getDrawable();
         Drawable targetDrawable = ContextCompat.getDrawable(context, R.drawable.ic_like);
+        ivLike.setOnClickListener(v -> Log.d("ListAdapter", "click"));
 
     }
 
     public static void collect(ImageView ivCollect, Long shareId, Long userId, Context context) {
         Drawable currentDrawable = ivCollect.getDrawable();
         Drawable targetDrawable = ContextCompat.getDrawable(context, R.drawable.ic_collect);
-
+        ivCollect.setOnClickListener(v -> Log.d("ListAdapter", "click"));
     }
 
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/listBackGround"
     tools:context=".fragment.ShareFragment">
 
     <ScrollView
@@ -15,17 +16,39 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="3dp">
 
+            <RelativeLayout
+                android:id="@+id/ll_space"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="写分享"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/light_blue"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
+
             <TextView
+                android:id="@+id/bar_01"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                android:background="@color/light_blue" />
+                android:background="@color/light_blue"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/ll_space"/>
 
             <RelativeLayout
                 android:id="@+id/rl_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:layout_marginTop="5dp">
+                android:layout_below="@id/bar_01">
 
                 <EditText
                     android:id="@+id/et_title"
@@ -42,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:background="@null"
-                    android:hint="说点什么..."
+                    android:hint="分享这一刻的想法..."
                     android:textColorHint="#888888"
                     android:gravity="top"
                     android:padding="15dp"
@@ -86,27 +109,27 @@
 
             <Button
                 android:id="@+id/btn_save"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:text=" 保存 "
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="20dp"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
                 android:background="@drawable/button_rounded"
                 android:layout_below="@id/rl_content" />
 
             <Button
                 android:id="@+id/btn_send"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:text=" 发布 "
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/button_rounded"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/rl_content" />
