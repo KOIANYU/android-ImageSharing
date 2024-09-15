@@ -302,7 +302,7 @@ public class ShareFragment extends Fragment {
                     url,
                     params,
                     this::parseSaveShareResponse,
-                    error -> Log.d("LoginActivity", error.toString())
+                    error -> Log.d("ShareFragment", error.toString())
             );
 
             queue.add(jsonObjectRequest);
@@ -346,7 +346,7 @@ public class ShareFragment extends Fragment {
                     url,
                     null,
                     this::parseMyShareListResponse,
-                    error -> Log.d("LoginActivity", error.toString())
+                    error -> Log.d("ShareFragment", error.toString())
             );
 
             queue.add(jsonObjectRequest);
@@ -416,8 +416,8 @@ public class ShareFragment extends Fragment {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.POST,
                     url,
                     params,
-                    response -> Log.d("sendShare", response.toString()),
-                    error -> Log.d("LoginActivity", error.toString())
+                    response -> Log.d("ShareFragment", response.toString()),
+                    error -> Log.d("ShareFragment", error.toString())
             );
 
             queue.add(jsonObjectRequest);

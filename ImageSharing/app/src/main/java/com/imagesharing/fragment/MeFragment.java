@@ -90,7 +90,7 @@ public class MeFragment extends Fragment {
 
                 releaseTextView.setText(String.valueOf(length));
 
-            }, error -> Log.d("LoginActivity", "Error: " + error.getMessage()));
+            }, error -> Log.d("MeFragment", "Error: " + error.getMessage()));
 
             queue.add(jsonObjectRequest);
 
@@ -109,7 +109,7 @@ public class MeFragment extends Fragment {
                 TextView focusTextView = getView().findViewById(R.id.focus_num);
 
                 focusTextView.setText(String.valueOf(length));
-            }, error -> Log.d("LoginActivity", "Error: " + error.getMessage()));
+            }, error -> Log.d("MeFragment", "Error: " + error.getMessage()));
 
             queue.add(jsonObjectRequest);
 
@@ -159,31 +159,39 @@ public class MeFragment extends Fragment {
         });
     }
 
+    // 处理点击跳转到我的草稿页面
     private void setupDownloadsClicks() {
         downloadsLayout.setOnClickListener(v -> {
-            // 跳转到草稿页面
-            startActivity(new Intent(getContext(), DraftsActivity.class));
+            Intent intent = new Intent(getContext(), DraftsActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         });
     }
 
+    // 处理点击跳转到我的收藏页面
     private void setupCollectionsClicks() {
         collectionsLayout.setOnClickListener(v -> {
-            // 跳转到收藏页面
-            startActivity(new Intent(getContext(), CollectionActivity.class));
+            Intent intent = new Intent(getContext(), CollectionActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         });
     }
 
+    // 处理点击跳转到我的点赞页面
     private void setupHistoryClicks() {
         historyLayout.setOnClickListener(v -> {
-            // 跳转到点赞页面
-            startActivity(new Intent(getContext(), LikesActivity.class));
+            Intent intent = new Intent(getContext(), LikesActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         });
     }
 
+    // 处理点击跳转到设置页面
     private void setupSettingsClicks() {
         settingsLayout.setOnClickListener(v -> {
-            // 跳转到设置页面
-            startActivity(new Intent(getContext(), SettingsActivity.class));
+            Intent intent = new Intent(getContext(), SettingsActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         });
     }
 

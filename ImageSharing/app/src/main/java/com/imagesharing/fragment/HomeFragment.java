@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment {
 
                 parseJsonResponse(response);
 
-            }, error -> Log.d("LoginActivity", error.toString()));
+            }, error -> Log.d("HomeFragment", error.toString()));
 
             queue.add(jsonObjectRequest);
 
@@ -130,11 +130,15 @@ public class HomeFragment extends Fragment {
                 adapter = new ListAdapter(records, requireContext(), userId);
                 shareList.setAdapter(adapter);
             }
-            Log.d("LoginActivity", "分享列表请求" + msg);
+            Log.d("HomeFragment", "分享列表请求" + msg);
 
         } catch (Exception e) {
-            Log.e("LoginActivity", "Error parsing JSON response: " + e.getMessage());
+            Log.e("HomeFragment", "Error parsing JSON response: " + e.getMessage());
         }
+    }
+
+    public void setQueue(RequestQueue queue) {
+        this.queue = queue;
     }
 
  }

@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/rl_content"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:background="@color/white">
 
         <SearchView
@@ -17,15 +17,15 @@
             android:layout_width="370dp"
             android:layout_height="30dp"
             android:background="@drawable/bg_search"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="搜索图文"
+            android:text="搜索用户"
             android:layout_marginStart="65dp"
-            android:layout_marginTop="14dp"/>
+            android:layout_marginTop="20dp"/>
 
     </RelativeLayout>
 

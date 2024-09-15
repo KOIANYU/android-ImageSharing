@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -10,7 +11,7 @@
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/ic_miss" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -39,7 +40,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/likeButton"
+        android:id="@+id/draftButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -47,6 +48,7 @@
         android:layout_marginBottom="1dp"
         android:background="@null"
         android:onClick="onLikeButtonClick"
-        android:src="@drawable/ic_relese" />
+        android:src="@drawable/ic_relese"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 </LinearLayout>

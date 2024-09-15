@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageSharing"
         tools:targetApi="31">
+        <activity
+            android:name=".view.ShareActivity"
+            android:exported="false" />
         <activity
             android:name=".view.NavigationActivity"
             android:exported="false" />
@@ -37,11 +44,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".view.CollectionActivity" />
         <activity android:name=".view.LikesActivity" />
-        <activity android:name=".view.FocusActivity"/>
-        <activity android:name=".view.MyDynamicsActivity"/>
+        <activity android:name=".view.FocusActivity" />
+        <activity android:name=".view.MyDynamicsActivity" />
         <activity android:name=".view.SettingsActivity" />
         <activity android:name=".view.AboutUsActivity" />
         <activity android:name=".view.DraftsActivity" />

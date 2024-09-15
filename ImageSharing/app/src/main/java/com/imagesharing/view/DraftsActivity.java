@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.imagesharing.response.ApiResponse;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +40,14 @@ public class DraftsActivity extends AppCompatActivity {
     private DraftsAdapter draftsAdapter;
     private static final String TAG = "DraftsActivity";
 
+    private Long userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drafts);
+
+        userId = getIntent().getLongExtra("userId", -1);
 
         // 初始化ListView
         listView = findViewById(R.id.listView);
@@ -56,9 +63,6 @@ public class DraftsActivity extends AppCompatActivity {
 
     private void getDrafts() {
         new Thread(() -> {
-            // 用户ID
-            long userId = 1826656600132292608L;
-                    ;
             // 构建URL
             String url = "https://api-store.openguet.cn/api/member/photo/share/save?userId=" + userId;
 
@@ -118,7 +122,7 @@ public class DraftsActivity extends AppCompatActivity {
     }
 
     // 自定义适配器
-    public static class DraftsAdapter extends ArrayAdapter<Record> {
+    public class DraftsAdapter extends ArrayAdapter<Record> {
         private List<Record> items;
 
         public DraftsAdapter(Context context, List<Record> items) {
@@ -137,9 +141,17 @@ public class DraftsActivity extends AppCompatActivity {
             TextView titleTextView = convertView.findViewById(R.id.titleTextView);
             TextView contentTextView = convertView.findViewById(R.id.contentTextView);
             ImageView imageView = convertView.findViewById(R.id.imageView);
+            ImageButton draftButton = convertView.findViewById(R.id.draftButton);
 
-            titleTextView.setText(item.getTitle());
-            contentTextView.setText(item.getContent());
+            String id = item.getId();
+            String pUserId = item.getPUserId();
+            String imageCode = item.getImageCode();
+            String title = item.getTitle();
+            String content = item.getContent();
+
+            titleTextView.setText(title);
+            contentTextView.setText(content);
+            //Log.d(TAG, "id: " + id + ", imageCode: " + imageCode + " " + pUserId);
 
             // 检查 imageUrlList 是否为空
             List<String> imageUrlList = item.getImageUrlList();
@@ -152,6 +164,19 @@ public class DraftsActivity extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.default_image2);
             }
 
+            // 设置草稿编辑按钮的点击事件
+            draftButton.setOnClickListener(v -> {
+                //Log.d(TAG, "草稿编辑按钮被点击，id: " + id + " " + position);
+                Intent intent = new Intent(getContext(), ShareActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("pUserId", pUserId);
+                intent.putExtra("imageCode", imageCode);
+                intent.putExtra("title", title);
+                intent.putExtra("content", content);
+                intent.putExtra("imageUrlList", (Serializable) imageUrlList);
+                startActivity(intent);
+            });
+
             return convertView;
         }
 
@@ -160,5 +185,6 @@ public class DraftsActivity extends AppCompatActivity {
             this.items.addAll(newData);
             notifyDataSetChanged();
         }
+
     }
 }

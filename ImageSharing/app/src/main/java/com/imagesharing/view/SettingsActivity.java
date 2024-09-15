@@ -9,10 +9,14 @@ import com.imagesharing.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private Long userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        userId = getIntent().getLongExtra("userId", -1);
 
         // 设置点击事件
         setupClickListeners();

@@ -38,10 +38,14 @@ public class CollectionActivity extends AppCompatActivity {
     private CollectItemsAdapter collectItemsAdapter;
     private static final String TAG = "CollectionActivity";
 
+    private Long userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collections);
+
+        userId = getIntent().getLongExtra("userId", -1);
 
         // 初始化ListView
         listView = findViewById(R.id.listView);
@@ -58,8 +62,6 @@ public class CollectionActivity extends AppCompatActivity {
 
     private void get() {
         new Thread(() -> {
-            // 用户ID
-            long userId = 1832492258876854272L;
             // 构建URL
             String url = "https://api-store.openguet.cn/api/member/photo/collect?userId=" + userId;
 

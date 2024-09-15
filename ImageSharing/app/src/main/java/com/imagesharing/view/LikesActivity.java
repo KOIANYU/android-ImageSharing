@@ -38,10 +38,14 @@ public class LikesActivity extends AppCompatActivity {
     private LikesAdapter likesAdapter;
     private static final String TAG = "LikesActivity";
 
+    private Long userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_likes);
+
+        userId = getIntent().getLongExtra("userId", -1);
 
         // 初始化ListView
         likesListView = findViewById(R.id.likesListView);
@@ -57,8 +61,6 @@ public class LikesActivity extends AppCompatActivity {
 
     private void fetchLikes() {
         new Thread(() -> {
-            // 用户ID
-            long userId = 1832492258876854272L;
             // 构建URL
             String url = "https://api-store.openguet.cn/api/member/photo/like?userId=" + userId;
 
