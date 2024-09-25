@@ -10,7 +10,7 @@
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/default_image2"/>
+        android:src="@drawable/ic_loading"/>
 
     <!-- Inner LinearLayout -->
     <LinearLayout

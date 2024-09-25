@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/comment_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="KOIAN"
+        android:textColor="@color/light_blue"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="回复"
+        android:textSize="16sp"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@id/comment_username"/>
+
+    <TextView
+        android:id="@+id/reply_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YU"
+        android:textSize="18sp"
+        android:textColor="@color/light_blue"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@id/reply"/>
+
+    <TextView
+        android:id="@+id/comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试测试测试测试"
+        android:textSize="16sp"
+        android:layout_below="@id/comment_username"/>
+
+</RelativeLayout>

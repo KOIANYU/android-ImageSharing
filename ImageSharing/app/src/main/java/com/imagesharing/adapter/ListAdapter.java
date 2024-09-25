@@ -99,11 +99,8 @@ public class ListAdapter extends BaseAdapter {
                     JSONArray imageUrlList = record.getJSONArray("imageUrlList");
                     loadImages(imageUrlList);
                 } else {
-                    ivImage.setImageResource(R.drawable.default_image2);
+                    ivImage.setImageResource(R.drawable.ic_loading);
                 }
-
-                like(ivLike, record.getLong("id"), userId, context);
-                collect(ivCollect, record.getLong("id"), userId, context);
 
             } catch (JSONException e) {
                 Log.e("ListAdapter", Objects.requireNonNull(e.getMessage()));
@@ -121,19 +118,6 @@ public class ListAdapter extends BaseAdapter {
             }
         }
 
-    }
-
-    public static void like(ImageView ivLike, Long shareId, Long userId, Context context) {
-        Drawable currentDrawable = ivLike.getDrawable();
-        Drawable targetDrawable = ContextCompat.getDrawable(context, R.drawable.ic_like);
-        ivLike.setOnClickListener(v -> Log.d("ListAdapter", "click"));
-
-    }
-
-    public static void collect(ImageView ivCollect, Long shareId, Long userId, Context context) {
-        Drawable currentDrawable = ivCollect.getDrawable();
-        Drawable targetDrawable = ContextCompat.getDrawable(context, R.drawable.ic_collect);
-        ivCollect.setOnClickListener(v -> Log.d("ListAdapter", "click"));
     }
 
 }

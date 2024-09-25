@@ -30,13 +30,13 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-        private Long userId;
+    private Long userId;
 
-        private RequestQueue queue;
-        private ListAdapter adapter;
+    private RequestQueue queue;
+    private ListAdapter adapter;
 
-        private GridView shareList;
-        private SwipeRefreshLayout swipeRefreshLayout;
+    private GridView shareList;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public HomeFragment(Long userId) {
             this.userId = userId;
@@ -95,11 +95,9 @@ public class HomeFragment extends Fragment {
         new Thread(() -> {
             String url = "http://10.70.142.223:8080/share" + "?userId="  + userId;
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
-
-                parseJsonResponse(response);
-
-            }, error -> Log.d("HomeFragment", error.toString()));
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    this::parseJsonResponse,
+                    error -> Log.d("HomeFragment", error.toString()));
 
             queue.add(jsonObjectRequest);
 

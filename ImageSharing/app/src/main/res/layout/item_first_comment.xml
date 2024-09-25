@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_avatar"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KOIAN"
+            android:textSize="18sp"
+            android:textColor="@color/light_blue"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_toRightOf="@id/iv_avatar"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2024-9-18 09:30:00"
+            android:textSize="10sp"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+            android:textSize="20sp"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="50dp"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_second_comment"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_background"
+            android:layout_below="@id/tv_content">
+
+            <ListView
+                android:id="@+id/second_comment_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_reply"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_answer"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/rl_second_comment"/>
+
+        <TextView
+            android:id="@+id/reply_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="20sp"
+            android:textColor="@color/light_blue"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/rl_second_comment"/>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

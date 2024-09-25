@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_avatar"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KOIAN"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/light_blue"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@id/iv_avatar"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2024-9-18 09:30:00"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+            android:textSize="20sp"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="50dp"/>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -24,6 +24,12 @@
         android:theme="@style/Theme.ImageSharing"
         tools:targetApi="31">
         <activity
+            android:name=".view.SecondCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.ShareActivity"
             android:exported="false" />
         <activity
@@ -36,7 +42,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.FirstCommentActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +50,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".view.CollectionActivity" />
         <activity android:name=".view.LikesActivity" />
         <activity android:name=".view.FocusActivity" />
@@ -51,6 +58,7 @@
         <activity android:name=".view.SettingsActivity" />
         <activity android:name=".view.AboutUsActivity" />
         <activity android:name=".view.DraftsActivity" />
+
     </application>
 
 </manifest>
